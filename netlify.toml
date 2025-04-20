@@ -1,6 +1,6 @@
 [build]
   command = "npm run build"
-  publish = ".next"
+  publish = "out"
   
 [build.environment]
   NODE_VERSION = "18.19.1"
@@ -25,12 +25,12 @@ package = "netlify-plugin-cache"
 # Production context
 [context.production]
   command = "npm run build"
-  publish = ".next"
+  publish = "out"
 
 # Deploy Preview context
 [context.deploy-preview]
   command = "npm run build"
-  publish = ".next"
+  publish = "out"
 
 # Handle Next.js routing - critical for proper path handling
 [[redirects]]

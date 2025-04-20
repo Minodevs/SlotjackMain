@@ -7,9 +7,9 @@ const shouldExport = process.env.NEXT_EXPORT === 'true';
 console.log(`Building for: ${isProd ? 'Production' : 'Development'} | Netlify: ${isNetlify} | Export: ${shouldExport}`);
 
 const nextConfig = {
-  // Update output mode - for Netlify we need a different approach
-  output: 'standalone',
-  distDir: '.next',
+  // Use static output for Netlify to avoid server runtime issues
+  output: isNetlify ? 'export' : (isProd ? 'standalone' : undefined),
+  distDir: isNetlify ? 'out' : '.next',
   reactStrictMode: true,
   swcMinify: true, // Use SWC minification for better performance
   
@@ -21,8 +21,8 @@ const nextConfig = {
   
   images: {
     domains: ['localhost', 'dulcet-tanuki-9e2ad9.netlify.app', 'livesitemiz.netlify.app'],
-    // For Netlify, we need to handle images appropriately
-    unoptimized: isNetlify,
+    // For Netlify with static export, we need unoptimized images
+    unoptimized: isNetlify || !isProd,
     remotePatterns: [
       {
         protocol: 'https',
