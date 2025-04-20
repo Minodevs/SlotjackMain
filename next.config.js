@@ -1,121 +1,100 @@
 /** @type {import('next').NextConfig} */
 
-const isProd = process.env.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === 'production';
 const isNetlify = process.env.NETLIFY === 'true';
-const shouldExport = process.env.NEXT_EXPORT === 'true';
+const isStaticExport = isNetlify || process.env.NEXT_EXPORT === 'true';
 
-console.log(`Building for: ${isProd ? 'Production' : 'Development'} | Netlify: ${isNetlify} | Export: ${shouldExport}`);
+console.log(`Building for: ${isProduction ? 'Production' : 'Development'} | Netlify: ${isNetlify} | Export: ${isStaticExport}`);
 
 const nextConfig = {
-  // Use static output for Netlify to avoid server runtime issues
-  output: isNetlify ? 'export' : (isProd ? 'standalone' : undefined),
-  distDir: isNetlify ? 'out' : '.next',
-  reactStrictMode: true,
-  swcMinify: true, // Use SWC minification for better performance
+  // Set the output based on environment
+  output: isStaticExport ? 'export' : undefined,
   
-  // For better compatibility with Netlify
-  trailingSlash: isProd, 
+  // Disable automatic static optimization for better control
+  trailingSlash: isStaticExport,
   
-  // Prevent partial static generation - force all or nothing
-  staticPageGenerationTimeout: 180, // 3 minutes timeout for static generation
-  
+  // Image configuration
   images: {
-    domains: ['localhost', 'dulcet-tanuki-9e2ad9.netlify.app', 'livesitemiz.netlify.app'],
-    // For Netlify with static export, we need unoptimized images
-    unoptimized: isNetlify || !isProd,
+    domains: ['source.unsplash.com', 'picsum.photos'],
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**',
+        hostname: 'source.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos',
       },
     ],
+    // For static export, unoptimized is required
+    unoptimized: isStaticExport,
   },
   
-  // Explicitly specify page extensions to exclude unwanted routes
+  // Specify page extensions to exclude unwanted routes
   pageExtensions: ['tsx', 'ts', 'jsx', 'js', 'mdx'],
   
-  // Disable the X-Powered-By header
-  poweredByHeader: false,
+  // For static export, add custom rewrite handling in redirects rules
+  async rewrites() {
+    // Skip if static export (will be handled by netlify.toml and _redirects)
+    if (isStaticExport) return [];
+    
+    return {
+      beforeFiles: [
+        {
+          source: '/admin/users/[id]/:path*',
+          destination: '/admin/users/:userId/:path*',
+        },
+      ],
+    };
+  },
   
-  // Enable compression for better performance
-  compress: true,
-  
-  // Set security headers
+  // Configure headers
   async headers() {
     return [
       {
-        source: '/:path*',
+        source: '/(.*)',
         headers: [
-          {
-            key: 'X-DNS-Prefetch-Control',
-            value: 'on',
-          },
-          {
-            key: 'X-Frame-Options',
-            value: 'SAMEORIGIN',
-          },
           {
             key: 'X-Content-Type-Options',
             value: 'nosniff',
           },
           {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin',
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block',
           },
         ],
       },
     ];
   },
   
-  // Webpack configuration
-  webpack: (config, { dev, isServer }) => {
-    // Only enable these optimizations in production
-    if (!dev) {
-      config.optimization = {
-        ...config.optimization,
-        moduleIds: 'deterministic',
-        chunkIds: 'deterministic',
-        realContentHash: true, // Add content hash based on file contents
-        flagIncludedChunks: true,
+  // For static export, simplify webpack config
+  webpack: (config, { isServer }) => {
+    // For static export, exclude all server-only modules
+    if (isStaticExport) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        path: false,
+        os: false,
+        crypto: false,
+        stream: false,
+        http: false,
+        https: false,
+        zlib: false,
       };
-      
-      // Force all pages to be included in the build
-      if (isServer) {
-        console.log('Configuring server-side build to include all pages');
-        config.optimization.splitChunks = {
-          cacheGroups: {
-            commons: {
-              name: 'commons',
-              chunks: 'all',
-              minChunks: 2,
-            },
-          },
-        };
-      }
-    }
-    
-    // Log the compile progress to debug build process
-    if (process.env.DEBUG_BUILD === 'true') {
-      const { ProgressPlugin } = require('webpack');
-      config.plugins.push(
-        new ProgressPlugin({
-          handler(percentage, message) {
-            console.log(`${(percentage * 100).toFixed(2)}% ${message}`);
-          },
-        })
-      );
     }
     
     return config;
   },
   
+  // Disable experimental features that might cause issues
   experimental: {
-    // Enable features to improve build process
-    optimizeCss: false, // Disable CSS optimization to avoid critters dependency issues
-    optimizePackageImports: isProd ? ['lucide-react', 'date-fns', 'framer-motion'] : [],
-    turbotrace: isProd ? {
-      logLevel: 'error',
-    } : undefined,
+    // appDir is now the default in Next.js 14
+    serverActions: !isStaticExport,
   },
 };
 

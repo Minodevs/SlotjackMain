@@ -1,5 +1,5 @@
 [build]
-  command = "npm run build"
+  command = "npm run build:netlify"
   publish = "out"
   
 [build.environment]
@@ -27,12 +27,12 @@ package = "netlify-plugin-cache"
 
 # Production context
 [context.production]
-  command = "npm run build"
+  command = "npm run build:netlify"
   publish = "out"
 
 # Deploy Preview context
 [context.deploy-preview]
-  command = "npm run build"
+  command = "npm run build:netlify"
   publish = "out"
 
 # Handle Next.js routing - critical for proper path handling

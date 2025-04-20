@@ -11,7 +11,7 @@
     "deploy:fresh": "netlify deploy --prod --force",
     "deploy:dry": "netlify deploy",
     "prebuild": "echo 'Skipping linting for Netlify'",
-    "clean": "node -e \"const fs=require('fs');if(fs.existsSync('.next')){fs.rmSync('.next',{recursive:true,force:true})};if(fs.existsSync('node_modules/.cache')){fs.rmSync('node_modules/.cache',{recursive:true,force:true})}\"",
+    "clean": "node -e \"const fs=require('fs');if(fs.existsSync('.next')){fs.rmSync('.next',{recursive:true,force:true})};if(fs.existsSync('node_modules/.cache')){fs.rmSync('node_modules/.cache',{recursive:true,force:true})};if(fs.existsSync('out')){fs.rmSync('out',{recursive:true,force:true})}\"",
     "build:clean": "npm run clean && npm run build",
     "deploy:clean": "npm run build:clean && npm run deploy:fresh",
     "netlify:dev": "netlify dev",
