@@ -7,8 +7,8 @@ const shouldExport = process.env.NEXT_EXPORT === 'true';
 console.log(`Building for: ${isProd ? 'Production' : 'Development'} | Netlify: ${isNetlify} | Export: ${shouldExport}`);
 
 const nextConfig = {
-  // We'll use standalone mode so server components can be rendered server-side
-  output: isProd ? 'standalone' : undefined,
+  // Update output mode - for Netlify we need a different approach
+  output: 'standalone',
   distDir: '.next',
   reactStrictMode: true,
   swcMinify: true, // Use SWC minification for better performance

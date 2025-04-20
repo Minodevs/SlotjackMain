@@ -8,7 +8,14 @@ import { ChevronLeft, Shield, User } from 'lucide-react';
 import ClientLayout from '@/components/ClientLayout';
 import { UserRank } from '@/types/user';
 
-export default function UserPartnersPage({ params }: { params: { userId: string } }) {
+// Type definition for the params
+type ParamsType = {
+  params: {
+    userId: string;
+  };
+};
+
+export default function PartnersPage({ params }: ParamsType) {
   const router = useRouter();
   const { user: currentUser } = useAuth();
   const [loading, setLoading] = useState(true);
