@@ -19,15 +19,15 @@ export default function MarketPage() {
   const { user } = authContext || {};
   const userPoints = user?.jackPoints || 0;
 
-  // Load market items from API and fall back to localStorage if API fails
+  // Load market items from static JSON file and fall back to localStorage if that fails
   useEffect(() => {
     const loadMarketItems = async () => {
       try {
         setLoading(true);
         setError(null);
         
-        // Add timestamp to prevent caching
-        const response = await fetch(`/api/market/items?t=${Date.now()}`, {
+        // For static export, use the static JSON file
+        const response = await fetch(`/mocks/api/market-items.json?t=${Date.now()}`, {
           cache: 'no-store',
           headers: {
             'Cache-Control': 'no-cache, no-store, must-revalidate',
@@ -36,7 +36,7 @@ export default function MarketPage() {
         });
         
         if (!response.ok) {
-          throw new Error(`API error: ${response.status}`);
+          throw new Error(`Static JSON error: ${response.status}`);
         }
         
         const data = await response.json();
@@ -44,6 +44,9 @@ export default function MarketPage() {
         if (data.success && data.items && Array.isArray(data.items)) {
           console.log('Loaded market items:', data.items.length);
           setMarketItems(data.items);
+          
+          // Store in localStorage for offline usage
+          localStorage.setItem(MARKET_ITEMS_STORAGE_KEY, JSON.stringify(data.items));
         } else {
           throw new Error('Invalid response format');
         }

@@ -148,10 +148,10 @@ export default function AdminMarketPage() {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
       
-      // First try to get items from API
+      // First try to get items from static JSON
       try {
-        console.log('Trying to load market items from API...');
-        const response = await fetch('/api/market/items', {
+        console.log('Trying to load market items from static JSON...');
+        const response = await fetch('/mocks/api/market-items.json', {
           cache: 'no-store', // Ensure fresh data
           headers: {
             'Cache-Control': 'no-cache'
@@ -164,7 +164,7 @@ export default function AdminMarketPage() {
         
         if (response.ok) {
           const data = await response.json();
-          console.log('Loaded items from API:', data.items?.length || 0);
+          console.log('Loaded items from static JSON:', data.items?.length || 0);
           
           if (data.items && data.items.length > 0) {
             // Add cache busting to image URLs
@@ -182,83 +182,25 @@ export default function AdminMarketPage() {
             setLoading(false);
             return;
           } else {
-            console.log('API returned empty items array');
-            throw new Error('API returned empty items array');
+            console.log('Static JSON returned empty items array');
+            throw new Error('Static JSON returned empty items array');
           }
         } else {
-          console.error(`Error from API (${response.status})`);
-          throw new Error(`API error: ${response.status}`);
+          console.error(`Error from static JSON (${response.status})`);
+          throw new Error(`Static JSON error: ${response.status}`);
         }
       } catch (apiError: any) {
         // Clear the timeout if it hasn't fired yet
         clearTimeout(timeoutId);
         
-        console.error('Error fetching from API:', apiError);
+        console.error('Error fetching from static JSON:', apiError);
         // Log specific abort errors
         if (apiError.name === 'AbortError') {
-          console.error('API request timed out');
-        }
-        // Continue to fallback options
-      }
-
-      // If API fails, try direct Supabase access with retry
-      for (let attempt = 1; attempt <= 2; attempt++) {
-        try {
-          console.log(`Trying direct Supabase access (attempt ${attempt}/2)...`);
-          // Initialize Supabase client
-          const supabase = await getSupabaseClient();
-          
-          // Try to get items from Supabase
-          const { data: supabaseItems, error } = await supabase
-            .from(MARKET_ITEMS_TABLE)
-            .select('*')
-            .order('id');
-          
-          if (error) {
-            console.error(`Error loading items from Supabase (attempt ${attempt}):`, error);
-            
-            if (attempt < 2) {
-              // Wait before retrying
-              await new Promise(resolve => setTimeout(resolve, 1000)); 
-              continue;
-            }
-            throw error;
-          }
-          
-          if (supabaseItems && supabaseItems.length > 0) {
-            // Successfully got items from Supabase
-            console.log('Loaded items from Supabase:', supabaseItems.length);
-            
-            // Add cache busting to image URLs
-            const timestamp = Date.now();
-            const processedItems = supabaseItems.map((item: MarketItem) => {
-              if (item.imageUrl && !item.imageUrl.includes('?')) {
-                return { ...item, imageUrl: `${item.imageUrl}?t=${timestamp}` };
-              }
-              return item;
-            });
-            
-            setMarketItems(processedItems);
-            // Update localStorage for backup
-            localStorage.setItem(MARKET_ITEMS_STORAGE_KEY, JSON.stringify(processedItems));
-            setLoading(false);
-            return;
-          } else {
-            console.log('No items found in Supabase');
-            throw new Error('No items found in Supabase');
-          }
-        } catch (supabaseError) {
-          if (attempt < 2) {
-            // Wait before retrying
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            continue;
-          }
-          console.error('All Supabase attempts failed:', supabaseError);
-          // Continue to localStorage fallback
+          console.error('Static JSON request timed out');
         }
       }
       
-      // Last resort: try to use localStorage
+      // Try to use localStorage as fallback
       try {
         console.log('Trying localStorage...');
         const storedItems = localStorage.getItem(MARKET_ITEMS_STORAGE_KEY);
@@ -270,27 +212,29 @@ export default function AdminMarketPage() {
             setLoading(false);
             
             // Show offline warning
-            toast.error('Çevrimdışı mod: Sunucu bağlantısı kurulamadı, yerel veriler kullanılıyor', {
+            toast.error('Çevrimdışı mod: Veriler yerel depodan yüklendi', {
               icon: '📱',
               duration: 5000
             });
             return;
           }
         }
-        // If we get here, localStorage also failed or was empty
+        // If we get here, localStorage was empty
         throw new Error('No items found in localStorage');
       } catch (localStorageError) {
         console.error('Error reading from localStorage:', localStorageError);
       }
       
-      // If everything failed, use empty array
-      console.log('All data sources failed. Using empty items array');
-      setMarketItems([]);
-      toast.error('Veriler yüklenemedi! Ürün ekleyerek başlayabilirsiniz.', { duration: 5000 });
+      // If everything failed, use default items
+      console.log('All data sources failed. Using default items');
+      const defaultItems = getDefaultMarketItems();
+      setMarketItems(defaultItems);
+      setLoading(false);
+      toast.error('Veriler yüklenemedi! Varsayılan ürünler gösteriliyor.', { duration: 5000 });
+      
     } catch (error) {
       console.error('Error in loadMarketItems:', error);
-      setError('Market ürünleri yüklenemedi: ' + (error instanceof Error ? error.message : String(error)));
-    } finally {
+      setError('Ürünler yüklenirken bir hata oluştu.');
       setLoading(false);
     }
   };
@@ -1405,7 +1349,8 @@ export default function AdminMarketPage() {
     // Function to load market images
     const loadMarketImages = async () => {
       try {
-        const response = await fetch('/api/list-market-images');
+        // For static export, use the static JSON file
+        const response = await fetch('/mocks/api/market-images.json');
         if (response.ok) {
           const data = await response.json();
           if (Array.isArray(data.images)) {

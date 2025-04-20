@@ -1,0 +1,71 @@
+{
+  "success": true,
+  "items": [
+    { 
+      "id": "1", 
+      "name": "Sterlinbet 1000₺", 
+      "points": 3500,
+      "category": "betting",
+      "description": "Market üzerinden satın alma işlemi gerçekleştirdikten sonra Telegram Grubu üzerinden bizlere Sterlinbet kullanıcı adınızı iletmeniz Gerekmektedir.",
+      "imageUrl": "/market-img/sterlinbet.png",
+      "stock": -1,
+      "featured": true,
+      "virtual": true
+    },
+    { 
+      "id": "2", 
+      "name": "Siribet 1000₺", 
+      "points": 3500,
+      "category": "betting",
+      "description": "Market üzerinden satın alma işlemi gerçekleştirdikten sonra Telegram Grubu üzerinden bizlere Siribet kullanıcı adınızı iletmeniz Gerekmektedir.",
+      "imageUrl": "/market-img/siribet.png",
+      "stock": -1,
+      "featured": true,
+      "virtual": true
+    },
+    { 
+      "id": "3", 
+      "name": "Risebet 20$", 
+      "points": 3000,
+      "category": "betting",
+      "description": "Market üzerinden satın alma işlemi gerçekleştirdikten sonra Telegram Grubu üzerinden bizlere Risebet kullanıcı adınızı iletmeniz Gerekmektedir.",
+      "imageUrl": "/market-img/risebet 20$.png",
+      "stock": -1,
+      "featured": true,
+      "virtual": true
+    },
+    { 
+      "id": "4", 
+      "name": "Risebet 10$", 
+      "points": 2500,
+      "category": "betting",
+      "description": "Market üzerinden satın alma işlemi gerçekleştirdikten sonra Telegram Grubu üzerinden bizlere Risebet kullanıcı adınızı iletmeniz Gerekmektedir.",
+      "imageUrl": "/market-img/Risebet 10$.png",
+      "stock": -1,
+      "featured": false,
+      "virtual": true
+    },
+    { 
+      "id": "5", 
+      "name": "Zlot 1000₺", 
+      "points": 3500,
+      "category": "betting",
+      "description": "Market üzerinden satın alma işlemi gerçekleştirdikten sonra Telegram Grubu üzerinden bizlere Zlot kullanıcı adınızı iletmeniz Gerekmektedir.",
+      "imageUrl": "/market-img/zlot 1000t.png",
+      "stock": -1,
+      "featured": true,
+      "virtual": true
+    },
+    { 
+      "id": "6", 
+      "name": "Baywin 1000₺", 
+      "points": 3500,
+      "category": "betting",
+      "description": "Market üzerinden satın alma işlemi gerçekleştirdikten sonra Telegram Grubu üzerinden bizlere Baywin kullanıcı adınızı iletmeniz Gerekmektedir.",
+      "imageUrl": "/market-img/baywin.png",
+      "stock": -1,
+      "featured": true,
+      "virtual": true
+    }
+  ]
+} 
