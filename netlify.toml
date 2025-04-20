@@ -5,12 +5,15 @@
 [build.environment]
   NODE_VERSION = "18.19.1"
   NEXT_TELEMETRY_DISABLED = "1"
-  # Force cache invalidation
-  NETLIFY_NEXT_PLUGIN_SKIP = "true"
-  # Add build timestamp to force fresh builds
-  BUILD_TIMESTAMP = "${COMMIT_REF}"
-  # Set Netlify flag to true
+  # Force static export
   NETLIFY = "true"
+  NEXT_EXPORT = "true"
+  # Disable experimental features
+  NEXT_SKIP_TYPE_CHECK = "true"
+  NEXT_SKIP_ESLINT_DURING_BUILD = "true"
+  # Skip running our custom plugins
+  NETLIFY_NEXT_PLUGIN_SKIP = "true"
+  # Environment flags
   NEXT_PUBLIC_DEPLOY_ENV = "production"
 
 # Add dependency cache plugin
@@ -48,11 +51,23 @@ package = "netlify-plugin-cache"
   to = "/_next/data/:splat"
   status = 200
 
+# API mock redirects
 [[redirects]]
-  from = "/*"
-  to = "/404.html"
-  status = 404
+  from = "/api/market/items"
+  to = "/mocks/api/market-items.json"
+  status = 200
 
+[[redirects]]
+  from = "/api/market/items/*"
+  to = "/mocks/api/market-items.json"
+  status = 200
+
+[[redirects]]
+  from = "/api/list-market-images"
+  to = "/mocks/api/market-images.json"
+  status = 200
+
+# Single page app handling
 [[redirects]]
   from = "/*"
   to = "/index.html"
@@ -81,6 +96,7 @@ package = "netlify-plugin-cache"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
 
+# Security headers
 [[headers]]
   for = "/*"
   [headers.values]
@@ -88,4 +104,3 @@ package = "netlify-plugin-cache"
     X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Content-Security-Policy = "default-src 'self'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; connect-src 'self' https:"

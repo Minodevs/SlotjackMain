@@ -4,6 +4,7 @@ import { cookies } from 'next/headers';
 
 // We'll use runtime edge to handle cookie access without static export issues
 export const runtime = 'edge';
+export const dynamic = 'error';
 
 // Default items as fallback
 function getDefaultItems(): MarketItem[] {

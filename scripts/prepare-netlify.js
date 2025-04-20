@@ -128,7 +128,10 @@ function createRedirects() {
   const redirects = [
     '# Redirect API calls to static JSON files',
     '/api/market/items /mocks/api/market-items.json 200',
+    '/api/market/items/* /mocks/api/market-items.json 200',
     '/api/list-market-images /mocks/api/market-images.json 200',
+    '/api/market/items/image-refresh/* /mocks/api/market-items.json 200',
+    '/api/market/items/delete/* /mocks/api/market-items.json 200',
     
     '# Handle client-side routing',
     '/*    /index.html   200',
