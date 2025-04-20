@@ -4,9 +4,20 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ChevronLeft, Shield, User, Award, Gift, Users } from 'lucide-react';
-import ClientLayout from '@/components/ClientLayout';
+import ClientLayoutWrapper from '@/components/ClientLayoutWrapper';
 import { useAuth } from '@/contexts/AuthContext';
 import { UserRank } from '@/types/user';
+
+// This is used for static export
+export const generateStaticParams = () => {
+  return [
+    { userId: '1' },
+    { userId: '2' },
+    { userId: '3' },
+    { userId: 'example-user' },
+    { userId: 'admin-user' },
+  ];
+};
 
 export default function UserProfilePage({ params }: { params: { userId: string } }) {
   const router = useRouter();
@@ -55,19 +66,19 @@ export default function UserProfilePage({ params }: { params: { userId: string }
 
   if (loading) {
     return (
-      <ClientLayout>
+      <ClientLayoutWrapper>
         <div className="container mx-auto py-8 flex items-center justify-center min-h-screen">
           <div className="text-center">
             <div className="inline-block w-10 h-10 border-4 border-[#FF6B00] border-t-transparent rounded-full animate-spin mb-4"></div>
             <p className="text-lg">Yükleniyor...</p>
           </div>
         </div>
-      </ClientLayout>
+      </ClientLayoutWrapper>
     );
   }
 
   return (
-    <ClientLayout>
+    <ClientLayoutWrapper>
       <div className="container mx-auto py-8">
         <div className="bg-gray-800 p-6 rounded-lg mb-6">
           <div className="flex items-center mb-6">
@@ -121,6 +132,6 @@ export default function UserProfilePage({ params }: { params: { userId: string }
           </div>
         </div>
       </div>
-    </ClientLayout>
+    </ClientLayoutWrapper>
   );
 }

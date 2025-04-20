@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { toast } from 'react-hot-toast';
-import ClientLayout from '../../components/ClientLayout';
+import ClientLayoutWrapper from '../../components/ClientLayoutWrapper';
 import { Mail, ArrowLeft, Loader2 } from 'lucide-react';
 
 export default function ForgotPasswordPage() {
@@ -53,7 +53,7 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <ClientLayout>
+    <ClientLayoutWrapper>
       <div className="flex items-center justify-center min-h-[calc(100vh-4rem)] px-4 py-12 bg-gray-900">
         <div className="w-full max-w-md p-8 space-y-6 bg-gray-800 rounded-xl shadow-lg border border-gray-700">
           <div className="text-center mb-6">
@@ -147,6 +147,6 @@ export default function ForgotPasswordPage() {
           )}
         </div>
       </div>
-    </ClientLayout>
+    </ClientLayoutWrapper>
   );
 } 

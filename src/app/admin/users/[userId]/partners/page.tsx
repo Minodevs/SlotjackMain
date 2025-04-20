@@ -1,24 +1,25 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ChevronLeft, Shield, User } from 'lucide-react';
-import ClientLayout from '@/components/ClientLayout';
+import { ChevronLeft, Users } from 'lucide-react';
+import ClientLayoutWrapper from '@/components/ClientLayoutWrapper';
+import { useAuth } from '@/contexts/AuthContext';
 import { UserRank } from '@/types/user';
 
-// Type definition for the params
-type ParamsType = {
-  params: {
-    userId: string;
-  };
+// This is used for static export
+export const generateStaticParams = () => {
+  return [
+    { userId: '1' },
+    { userId: '2' },
+    { userId: '3' },
+    { userId: 'example-user' },
+    { userId: 'admin-user' },
+  ];
 };
 
-// Remove generateStaticParams as it conflicts with 'use client'
-// The parent directory's generateStaticParams.ts will handle this route
-
-export default function PartnersPage({ params }: ParamsType) {
+export default function PartnersPage({ params }: { params: { userId: string } }) {
   const router = useRouter();
   const { user: currentUser } = useAuth();
   const [loading, setLoading] = useState(true);
@@ -31,63 +32,69 @@ export default function PartnersPage({ params }: ParamsType) {
       router.push('/');
       return;
     }
-
-    setLoading(false);
+    
+    // Simulate loading data
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
   }, [currentUser, router]);
 
   if (loading) {
     return (
-      <ClientLayout>
+      <ClientLayoutWrapper>
         <div className="container mx-auto py-8 flex items-center justify-center min-h-screen">
           <div className="text-center">
             <div className="inline-block w-10 h-10 border-4 border-[#FF6B00] border-t-transparent rounded-full animate-spin mb-4"></div>
             <p className="text-lg">Yükleniyor...</p>
           </div>
         </div>
-      </ClientLayout>
+      </ClientLayoutWrapper>
     );
   }
 
   return (
-    <ClientLayout>
+    <ClientLayoutWrapper>
       <div className="container mx-auto py-8">
-        <div className="bg-gray-800 p-6 rounded-lg mb-6">
+        <div className="bg-gray-800 p-6 rounded-lg">
           <div className="flex items-center mb-6">
             <Link href={`/admin/users/${userId}`} className="flex items-center text-gray-400 hover:text-white mr-4">
               <ChevronLeft size={18} className="mr-1" />
               <span>Kullanıcı Profiline Dön</span>
             </Link>
-            <h1 className="text-xl font-bold flex-1">Kullanıcı Partner Verileri</h1>
-            <div className="bg-blue-900/30 px-3 py-1 rounded-md text-blue-300 text-sm flex items-center">
-              <Shield size={14} className="mr-1.5" />
-              <span>Admin Görünümü</span>
-            </div>
+            <h1 className="text-xl font-bold flex-1">Kullanıcı Ortakları</h1>
           </div>
           
           <div className="bg-gray-750 border border-gray-700 rounded-lg p-5">
-            <div className="flex items-center mb-5">
-              <User size={24} className="text-orange-500 mr-2" />
-              <h2 className="text-lg font-semibold">Kullanıcı ID: {userId}</h2>
-            </div>
-            
-            <p className="text-gray-400 mb-6">
-              Bu kullanıcı için partner verileri henüz mevcut değil. Partner sistemi geliştirme aşamasındadır.
-            </p>
-            
-            <div className="flex flex-col space-y-4">
-              <div className="bg-gray-800 p-4 rounded-lg">
-                <div className="text-gray-300 font-medium mb-2">Partner Sistemi Özellikleri</div>
-                <ul className="list-disc pl-5 text-gray-400">
-                  <li>Kullanıcılar için özel davet bağlantıları</li>
-                  <li>Davet edilen kullanıcıların aktivitelerine göre bonus puanlar</li>
-                  <li>Toplam kayıt sayısı ve toplam kazanç istatistikleri</li>
-                  <li>Çok seviyeli referans sistemi</li>
-                </ul>
+            <div className="text-center p-8">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-900/30 rounded-full mb-4">
+                <Users size={32} className="text-blue-400" />
+              </div>
+              
+              <h2 className="text-xl font-semibold mb-2">Ortaklık Sistemi</h2>
+              <p className="text-gray-400 mb-6 max-w-lg mx-auto">
+                Bu sayfadan kullanıcının getirdiği ortakları ve ortaklık istatistiklerini görüntüleyebilirsiniz.
+              </p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+                <div className="bg-gray-800 p-4 rounded-lg">
+                  <h3 className="font-medium mb-2">Davet Linkleri</h3>
+                  <p className="text-sm text-gray-400">Kullanıcının yarattığı ve paylaştığı davet linkleri</p>
+                </div>
+                
+                <div className="bg-gray-800 p-4 rounded-lg">
+                  <h3 className="font-medium mb-2">Getirdiği Ortaklar</h3>
+                  <p className="text-sm text-gray-400">Kullanıcının sisteme davet ettiği aktif kullanıcılar</p>
+                </div>
+                
+                <div className="bg-gray-800 p-4 rounded-lg">
+                  <h3 className="font-medium mb-2">Kazanç İstatistikleri</h3>
+                  <p className="text-sm text-gray-400">Ortak sistemi üzerinden elde edilen kazançlar</p>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </ClientLayout>
+    </ClientLayoutWrapper>
   );
 } 

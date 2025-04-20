@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { toast } from 'react-hot-toast';
-import ClientLayout from '../../../components/ClientLayout';
+import ClientLayoutWrapper from '../../../components/ClientLayoutWrapper';
 import { Lock, ArrowLeft, Loader2, AlertCircle, CheckCircle } from 'lucide-react';
 
 export default function ResetPasswordPage({ params }: { params: { token: string } }) {
@@ -79,20 +79,20 @@ export default function ResetPasswordPage({ params }: { params: { token: string 
 
   if (isTokenValidating) {
     return (
-      <ClientLayout>
+      <ClientLayoutWrapper>
         <div className="flex items-center justify-center min-h-[calc(100vh-4rem)] px-4 py-12 bg-gray-900">
           <div className="w-full max-w-md p-8 space-y-6 bg-gray-800 rounded-xl shadow-lg border border-gray-700 text-center">
             <Loader2 className="h-8 w-8 animate-spin mx-auto text-orange-500" />
             <p className="text-white">Token doğrulanıyor...</p>
           </div>
         </div>
-      </ClientLayout>
+      </ClientLayoutWrapper>
     );
   }
 
   if (isTokenValid === false) {
     return (
-      <ClientLayout>
+      <ClientLayoutWrapper>
         <div className="flex items-center justify-center min-h-[calc(100vh-4rem)] px-4 py-12 bg-gray-900">
           <div className="w-full max-w-md p-8 space-y-6 bg-gray-800 rounded-xl shadow-lg border border-gray-700">
             <div className="text-center">
@@ -119,13 +119,13 @@ export default function ResetPasswordPage({ params }: { params: { token: string 
             </div>
           </div>
         </div>
-      </ClientLayout>
+      </ClientLayoutWrapper>
     );
   }
 
   if (resetSuccess) {
     return (
-      <ClientLayout>
+      <ClientLayoutWrapper>
         <div className="flex items-center justify-center min-h-[calc(100vh-4rem)] px-4 py-12 bg-gray-900">
           <div className="w-full max-w-md p-8 space-y-6 bg-gray-800 rounded-xl shadow-lg border border-gray-700">
             <div className="text-center">
@@ -148,12 +148,12 @@ export default function ResetPasswordPage({ params }: { params: { token: string 
             </div>
           </div>
         </div>
-      </ClientLayout>
+      </ClientLayoutWrapper>
     );
   }
 
   return (
-    <ClientLayout>
+    <ClientLayoutWrapper>
       <div className="flex items-center justify-center min-h-[calc(100vh-4rem)] px-4 py-12 bg-gray-900">
         <div className="w-full max-w-md p-8 space-y-6 bg-gray-800 rounded-xl shadow-lg border border-gray-700">
           <div className="text-center mb-6">
@@ -231,6 +231,6 @@ export default function ResetPasswordPage({ params }: { params: { token: string 
           </div>
         </div>
       </div>
-    </ClientLayout>
+    </ClientLayoutWrapper>
   );
 } 
