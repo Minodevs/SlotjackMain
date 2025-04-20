@@ -3,7 +3,7 @@
   publish = ".next"
   
 [build.environment]
-  NODE_VERSION = "18"
+  NODE_VERSION = "18.19.1"
   NEXT_TELEMETRY_DISABLED = "1"
   # Force cache invalidation
   NETLIFY_NEXT_PLUGIN_SKIP = "true"
