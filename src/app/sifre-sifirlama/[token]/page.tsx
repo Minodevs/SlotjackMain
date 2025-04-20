@@ -233,4 +233,7 @@ export default function ResetPasswordPage({ params }: { params: { token: string 
       </div>
     </ClientLayoutWrapper>
   );
-} 
+}
+
+// Export the static params from a separate file
+export { generateStaticParams } from './generateStaticParams'; 

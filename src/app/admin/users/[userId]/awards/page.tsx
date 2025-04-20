@@ -17,16 +17,8 @@ type ParamsType = {
   };
 };
 
-// This is used for static export
-export const generateStaticParams = () => {
-  return [
-    { userId: '1' },
-    { userId: '2' },
-    { userId: '3' },
-    { userId: 'example-user' },
-    { userId: 'admin-user' },
-  ];
-};
+// Export the static params from a separate file
+export { generateStaticParams } from './generateStaticParams';
 
 export default function UserAwardsPage({ params }: ParamsType) {
   const router = useRouter();

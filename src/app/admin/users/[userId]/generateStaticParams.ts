@@ -1,12 +1,10 @@
-// This file handles static param generation for all [userId] routes
+// This is used for static export
 export function generateStaticParams() {
-  // In a real app, you would fetch this data from your database
-  // For static builds, we include several example userIds for pre-rendering
   return [
-    { userId: 'example-user-id' },
-    { userId: 'test-user' },
+    { userId: '1' },
+    { userId: '2' },
+    { userId: '3' },
+    { userId: 'example-user' },
     { userId: 'admin-user' },
-    { userId: '12345' },
-    { userId: 'johndoe' }
   ];
 } 
