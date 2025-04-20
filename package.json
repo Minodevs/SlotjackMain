@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && npm run prepare-functions",
+    "prepare-functions": "cd netlify/functions/next && npm install --omit=dev",
     "start": "next start",
     "lint": "next lint",
     "deploy": "netlify deploy --prod",

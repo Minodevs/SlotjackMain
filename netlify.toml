@@ -96,6 +96,40 @@ package = "netlify-plugin-cache"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
 [functions]
-  # Increase function timeout for better debugging
+  # Configure functions to handle Next.js properly
   node_bundler = "esbuild"
-  external_node_modules = ["@netlify/next"]
+  # List all the large dependencies that should be excluded from bundling
+  external_node_modules = [
+    "@netlify/next",
+    "next",
+    "react",
+    "react-dom",
+    "@next/font",
+    "sharp",
+    "@supabase/supabase-js",
+    "@vercel/analytics",
+    "tailwindcss",
+    "postcss",
+    "autoprefixer"
+  ]
+  # Increase the function timeout for better performance
+  timeout = 30
+  # Increase memory
+  memory = 1024
+
+[functions."next-*"]
+  # Configuration specifically for the Next.js functions
+  included_files = [".next/server/**"]
+  external_node_modules = [
+    "@netlify/next",
+    "next",
+    "react",
+    "react-dom",
+    "@next/font",
+    "sharp",
+    "@supabase/supabase-js",
+    "@vercel/analytics",
+    "tailwindcss",
+    "postcss",
+    "autoprefixer"
+  ]
