@@ -59,6 +59,42 @@ const nextConfig = {
   experimental: {
     // Empty for now - using defaults
   },
+  
+  // Optimize for Netlify serverless functions
+  webpack: (config, { dev, isServer }) => {
+    // Only apply optimizations for production builds on Netlify
+    if (isProduction && isNetlify && isServer) {
+      console.log('⚡ Applying Netlify function size optimizations');
+      
+      // Prevent bundling large dependencies
+      config.externals = [
+        ...config.externals || [],
+        'sharp',
+        'next',
+        'react',
+        'react-dom',
+        '@supabase/supabase-js',
+        'tailwindcss',
+        'postcss',
+        'autoprefixer',
+        '@headlessui/react',
+        'lucide-react',
+        'react-hot-toast'
+      ];
+      
+      // Minimize bundle size
+      config.optimization = {
+        ...config.optimization,
+        minimize: true,
+        sideEffects: true,
+        providedExports: true,
+        usedExports: true,
+        concatenateModules: true,
+      };
+    }
+    
+    return config;
+  },
 };
 
 module.exports = nextConfig; 

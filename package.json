@@ -4,8 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && npm run prepare-functions",
+    "build": "next build && npm run prepare-functions && npm run optimize-netlify && npm run optimize-function-size",
     "prepare-functions": "cd netlify/functions/next && npm install --omit=dev",
+    "optimize-netlify": "node scripts/optimize-netlify.js",
+    "optimize-function-size": "node scripts/optimize-function-size.js",
     "start": "next start",
     "lint": "next lint",
     "deploy": "netlify deploy --prod",

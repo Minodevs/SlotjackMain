@@ -98,38 +98,18 @@ package = "netlify-plugin-cache"
 # General function settings
 [functions]
   node_bundler = "esbuild"
-  external_node_modules = [
-    "@netlify/next",
-    "next",
-    "react",
-    "react-dom",
-    "@next/font",
-    "sharp",
-    "@supabase/supabase-js",
-    "@vercel/analytics",
-    "tailwindcss",
-    "postcss",
-    "autoprefixer"
-  ]
-
+  # Exclude ALL node_modules from bundling for maximum size reduction
+  included_node_modules = []
+  
 # Pattern-specific function settings - applies to all functions
 [functions."*"]
   timeout = 30
   memory = 1024
+  # Keep function size under limits by not bundling dependencies
+  external_node_modules = ["*"]
 
 # Next.js specific function settings
 [functions."next-*"]
   included_files = [".next/server/**"]
-  external_node_modules = [
-    "@netlify/next",
-    "next",
-    "react",
-    "react-dom",
-    "@next/font",
-    "sharp",
-    "@supabase/supabase-js",
-    "@vercel/analytics",
-    "tailwindcss",
-    "postcss",
-    "autoprefixer"
-  ]
+  # Explicitly mark key dependencies as external
+  external_node_modules = ["*"]
