@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run clean && NEXT_SKIP_ESLINT_DURING_BUILD=true NEXT_SKIP_TYPE_CHECK=true NETLIFY=true NODE_ENV=production next build",
     "start": "next start",
     "lint": "next lint",
     "deploy": "netlify deploy --prod",
@@ -18,8 +18,8 @@
     "postbuild": "next-sitemap",
     "netlify-build": "node netlify-build.js",
     "netlify-build-skip-lint": "node build-for-netlify.js",
-    "build:netlify": "cross-env NEXT_SKIP_ESLINT_DURING_BUILD=true NEXT_SKIP_TYPE_CHECK=true NEXT_EXPORT=true NODE_ENV=production next build",
-    "debug:build": "cross-env DEBUG_BUILD=true NEXT_EXPORT=true npm run build:netlify",
+    "build:netlify": "cross-env NEXT_SKIP_ESLINT_DURING_BUILD=true NEXT_SKIP_TYPE_CHECK=true NODE_ENV=production next build",
+    "debug:build": "cross-env DEBUG_BUILD=true npm run build:netlify",
     "postinstall": "npm ls react || npm install react@^18"
   },
   "dependencies": {

@@ -7,19 +7,21 @@ const shouldExport = process.env.NEXT_EXPORT === 'true';
 console.log(`Building for: ${isProd ? 'Production' : 'Development'} | Netlify: ${isNetlify} | Export: ${shouldExport}`);
 
 const nextConfig = {
-  output: isProd ? 'standalone' : undefined,
+  output: isNetlify ? 'export' : (isProd ? 'standalone' : undefined),
+  distDir: isNetlify ? 'out' : '.next',
   reactStrictMode: true,
   swcMinify: true, // Use SWC minification for better performance
   
   // Force fully static exports for Netlify
-  trailingSlash: isProd, // Add trailing slashes in production for better compatibility
+  trailingSlash: true, // Add trailing slashes for better compatibility with Netlify
   
   // Prevent partial static generation - force all or nothing
   staticPageGenerationTimeout: 180, // 3 minutes timeout for static generation
   
   images: {
-    domains: ['localhost', 'dulcet-tanuki-9e2ad9.netlify.app'],
-    unoptimized: !isProd, // Only optimize in production
+    domains: ['localhost', 'dulcet-tanuki-9e2ad9.netlify.app', 'livesitemiz.netlify.app'],
+    // For Netlify with export output, we need unoptimized images
+    unoptimized: isNetlify || !isProd,
     remotePatterns: [
       {
         protocol: 'https',

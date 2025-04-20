@@ -1,6 +1,6 @@
 [build]
   command = "npm run build"
-  publish = ".next"
+  publish = "out"
   
 [build.environment]
   NODE_VERSION = "18.19.1"
@@ -9,8 +9,8 @@
   NETLIFY_NEXT_PLUGIN_SKIP = "true"
   # Add build timestamp to force fresh builds
   BUILD_TIMESTAMP = "${COMMIT_REF}"
-  # Ensure all pages are generated
-  NEXT_EXPORT = "true"
+  # Set Netlify flag to true
+  NETLIFY = "true"
   NEXT_PUBLIC_DEPLOY_ENV = "production"
 
 # Add dependency cache plugin
@@ -25,12 +25,12 @@ package = "netlify-plugin-cache"
 # Production context
 [context.production]
   command = "npm run build"
-  publish = ".next"
+  publish = "out"
 
 # Deploy Preview context
 [context.deploy-preview]
   command = "npm run build"
-  publish = ".next"
+  publish = "out"
 
 # Handle Next.js routing - critical for proper path handling
 [[redirects]]
@@ -50,9 +50,14 @@ package = "netlify-plugin-cache"
 
 [[redirects]]
   from = "/*"
+  to = "/404.html"
+  status = 404
+
+[[redirects]]
+  from = "/*"
   to = "/index.html"
   status = 200
-  force = true
+  force = false
 
 # Cache optimization
 [[headers]]
