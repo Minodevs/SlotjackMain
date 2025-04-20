@@ -2,8 +2,12 @@
 export function generateStaticParams() {
   // For password reset tokens, we typically wouldn't pre-render these
   // since they're dynamically generated and short-lived.
-  // But for build purposes, we'll include an example.
+  // But for static builds, we'll include several examples.
   return [
-    { token: 'example-reset-token' }
+    { token: 'example-reset-token' },
+    { token: 'expired-token' },
+    { token: 'valid-token-example' },
+    { token: '123456789abcdef' },
+    { token: 'test-reset-token' }
   ];
 } 
