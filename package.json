@@ -19,7 +19,8 @@
     "netlify-build": "node netlify-build.js",
     "netlify-build-skip-lint": "node build-for-netlify.js",
     "build:netlify": "cross-env NEXT_SKIP_ESLINT_DURING_BUILD=true NEXT_SKIP_TYPE_CHECK=true NEXT_EXPORT=true NODE_ENV=production next build",
-    "debug:build": "cross-env DEBUG_BUILD=true NEXT_EXPORT=true npm run build:netlify"
+    "debug:build": "cross-env DEBUG_BUILD=true NEXT_EXPORT=true npm run build:netlify",
+    "postinstall": "npm ls react || npm install react@^18"
   },
   "dependencies": {
     "@supabase/ssr": "^0.1.0",
