@@ -230,47 +230,47 @@ export default function AdminEventsPage() {
   useEffect(() => {
     const loadEvents = () => {
       if (typeof window !== 'undefined') {
-        try {
+      try {
           console.log("Loading events from localStorage...");
-          const storedEvents = localStorage.getItem(EVENTS_STORAGE_KEY);
-          if (storedEvents) {
+        const storedEvents = localStorage.getItem(EVENTS_STORAGE_KEY);
+        if (storedEvents) {
             console.log("Found stored events:", storedEvents);
-            // Need to convert date strings back to Date objects
-            const parsedEvents = JSON.parse(storedEvents).map((event: any) => {
-              try {
-                return {
-                  ...event,
-                  date: new Date(event.date),
-                  endDate: new Date(event.endDate)
-                };
-              } catch (error) {
-                console.error('Error converting date for event:', event.id, error);
-                // Provide default dates if conversion fails
-                return {
-                  ...event,
-                  date: new Date(),
-                  endDate: new Date()
-                };
-              }
-            });
-            setEvents(parsedEvents);
-          } else {
-            console.log("No stored events found, initializing with demo events");
-            // Initialize localStorage with demo events
-            localStorage.setItem(EVENTS_STORAGE_KEY, JSON.stringify(
-              demoEvents.map(event => ({
+          // Need to convert date strings back to Date objects
+          const parsedEvents = JSON.parse(storedEvents).map((event: any) => {
+            try {
+              return {
                 ...event,
-                date: event.date.toISOString(),
-                endDate: event.endDate.toISOString()
-              }))
-            ));
-            setEvents(demoEvents);
-          }
-        } catch (error) {
-          console.error('Error loading events from localStorage:', error);
+                date: new Date(event.date),
+                endDate: new Date(event.endDate)
+              };
+            } catch (error) {
+              console.error('Error converting date for event:', event.id, error);
+              // Provide default dates if conversion fails
+              return {
+                ...event,
+                date: new Date(),
+                endDate: new Date()
+              };
+            }
+          });
+          setEvents(parsedEvents);
+        } else {
+            console.log("No stored events found, initializing with demo events");
+          // Initialize localStorage with demo events
+          localStorage.setItem(EVENTS_STORAGE_KEY, JSON.stringify(
+            demoEvents.map(event => ({
+              ...event,
+              date: event.date.toISOString(),
+              endDate: event.endDate.toISOString()
+            }))
+          ));
           setEvents(demoEvents);
         }
+      } catch (error) {
+        console.error('Error loading events from localStorage:', error);
+        setEvents(demoEvents);
       }
+    }
     };
 
     // Load events whenever loading state changes or component mounts
@@ -293,7 +293,7 @@ export default function AdminEventsPage() {
       window.removeEventListener('storage', handleStorageChange);
     };
   }, [loading]);
-
+  
   // Function to refresh events data
   const refreshEvents = useCallback(() => {
     if (typeof window !== 'undefined') {
@@ -304,11 +304,11 @@ export default function AdminEventsPage() {
           const parsedEvents = JSON.parse(storedEvents).map((event: any) => {
             try {
               return {
-                ...event,
+            ...event,
                 date: new Date(event.date),
                 endDate: new Date(event.endDate)
               };
-            } catch (error) {
+      } catch (error) {
               console.error('Error converting date for event:', event.id, error);
               return {
                 ...event,
@@ -523,7 +523,7 @@ export default function AdminEventsPage() {
       fileInputRef.current.click();
     }
   };
-
+  
   // Open modal for adding new event
   const handleAddEvent = () => {
     setEditingEventId(null);
@@ -608,7 +608,7 @@ export default function AdminEventsPage() {
           // Force a refresh to update the UI
           window.location.reload();
         }
-      } catch (error) {
+        } catch (error) {
         console.error('Error deleting event:', error);
         toast.error('Etkinlik silinirken bir hata oluştu.');
       }
@@ -1162,9 +1162,9 @@ export default function AdminEventsPage() {
                               <label className="block text-gray-300 text-sm font-medium mb-1">
                                 <span className="flex items-center"><Globe className="w-4 h-4 mr-1" /> Görsel URL</span>
                               </label>
-                              <input
-                                type="text"
-                                className="w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    <input
+                      type="text"
+                      className="w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 value={eventFormData.image}
                                 onChange={handleImageUrlChange}
                                 placeholder="https://... veya /etkinlikimg/..."
@@ -1318,9 +1318,9 @@ export default function AdminEventsPage() {
                         {/* Hidden input field to store the selected image path */}
                         <input 
                           type="hidden" 
-                          name="image" 
-                          value={eventFormData.image} 
-                        />
+                      name="image"
+                      value={eventFormData.image}
+                    />
                       </div>
                     </div>
                   </div>

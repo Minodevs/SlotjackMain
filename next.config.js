@@ -36,7 +36,7 @@ const nextConfig = {
   
   // For static export, add custom rewrite handling in redirects rules
   async rewrites() {
-    // Skip if static export (will be handled by netlify.toml and _redirects)
+    // Skip for static export as it's not compatible
     if (isStaticExport) return [];
     
     return {
@@ -51,6 +51,9 @@ const nextConfig = {
   
   // Configure headers
   async headers() {
+    // Skip for static export as it's not compatible
+    if (isStaticExport) return [];
+    
     return [
       {
         source: '/(.*)',
@@ -126,10 +129,9 @@ const nextConfig = {
     pagesBufferLength: 5,
   },
   
-  // Disable experimental features that might cause issues
+  // Experimental features configuration - removed serverActions as it's built-in to Next.js 14
   experimental: {
-    // appDir is now the default in Next.js 14
-    serverActions: !isStaticExport,
+    // Empty for now - using defaults
   },
 };
 

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ChevronLeft, Shield, Gift, Calendar } from 'lucide-react';
+import { ChevronLeft, Shield, GitBranch, Coins, Gift, Calendar, AlertCircle, Plus, User, CalendarClock } from 'lucide-react';
 import ClientLayout from '@/components/ClientLayout';
 import { UserRank } from '@/types/user';
 
@@ -22,19 +22,6 @@ type ParamsType = {
     userId: string;
   };
 };
-
-// Define static parameters for static export
-export function generateStaticParams() {
-  // In a real app, you would fetch this data from your database
-  // For static builds, we include several example userIds for pre-rendering
-  return [
-    { userId: 'example-user-id' },
-    { userId: 'test-user' },
-    { userId: 'admin-user' },
-    { userId: '12345' },
-    { userId: 'johndoe' }
-  ];
-}
 
 export default function UserBonusesPage({ params }: ParamsType) {
   const router = useRouter();
