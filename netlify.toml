@@ -7,6 +7,9 @@
   NEXT_TELEMETRY_DISABLED = "1"
   # Environment flags
   NEXT_PUBLIC_DEPLOY_ENV = "production"
+  NEXT_PUBLIC_SITE_URL = "https://livesitemiz.netlify.app"
+  # Debug logs
+  DEBUG = "@netlify/next,netlify-next-plugin"
 
 # Add dependency cache plugin
 [[plugins]]
@@ -91,3 +94,8 @@ package = "netlify-plugin-cache"
     X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+
+[functions]
+  # Increase function timeout for better debugging
+  node_bundler = "esbuild"
+  external_node_modules = ["@netlify/next"]
