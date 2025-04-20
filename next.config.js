@@ -7,14 +7,14 @@ const shouldExport = process.env.NEXT_EXPORT === 'true';
 console.log(`Building for: ${isProd ? 'Production' : 'Development'} | Netlify: ${isNetlify} | Export: ${shouldExport}`);
 
 const nextConfig = {
-  // For Netlify, we'll use standalone so API routes can work
+  // We'll use standalone mode so server components can be rendered server-side
   output: isProd ? 'standalone' : undefined,
   distDir: '.next',
   reactStrictMode: true,
   swcMinify: true, // Use SWC minification for better performance
   
-  // Force fully static exports for Netlify
-  trailingSlash: true, // Add trailing slashes for better compatibility with Netlify
+  // For better compatibility with Netlify
+  trailingSlash: isProd, 
   
   // Prevent partial static generation - force all or nothing
   staticPageGenerationTimeout: 180, // 3 minutes timeout for static generation

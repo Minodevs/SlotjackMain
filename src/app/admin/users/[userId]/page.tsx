@@ -11,12 +11,6 @@ import { UserRank } from '@/types/user';
 // Prevent static generation of this page
 export const dynamic = 'force-dynamic';
 
-export function generateStaticParams() {
-  return [
-    { userId: 'example-user-id' },
-  ];
-}
-
 export default function UserProfilePage({ params }: { params: { userId: string } }) {
   const router = useRouter();
   const { user: currentUser } = useAuth();

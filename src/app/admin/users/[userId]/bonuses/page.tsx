@@ -16,12 +16,6 @@ type Bonus = {
   createdAt: string;
 };
 
-export function generateStaticParams() {
-  return [
-    { userId: 'example-user-id' },
-  ];
-}
-
 export default function UserBonusesPage({ params }: { params: { userId: string } }) {
   const router = useRouter();
   const { user: currentUser } = useAuth();

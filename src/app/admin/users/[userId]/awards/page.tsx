@@ -10,16 +10,6 @@ import { UserRank, UserAward, AwardType } from '@/types/user';
 import AwardModal from './AwardModal';
 import { toast } from 'react-hot-toast';
 
-// This solves the error with "output: export"
-// In a real app, this would fetch from your database
-export function generateStaticParams() {
-  // Return an array of userIds that should be pre-rendered
-  // For demonstration, we'll just include one example ID
-  return [
-    { userId: 'example-user-id' },
-  ];
-}
-
 export default function UserAwardsPage({ params }: { params: { userId: string } }) {
   const router = useRouter();
   const { user: currentUser } = useAuth();
