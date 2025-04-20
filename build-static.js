@@ -47,15 +47,26 @@ function cleanArtifacts() {
 function executeCommand(command) {
   console.log(`🔄 Executing: ${command}`);
   
-  const envString = Object.entries(env)
-    .map(([key, value]) => `${key}=${value}`)
-    .join(' ');
+  // Windows-compatible environment variables
+  const isWindows = process.platform === 'win32';
   
   try {
-    execSync(`${envString} ${command}`, {
-      stdio: 'inherit',
-      env: { ...process.env, ...env },
-    });
+    if (isWindows) {
+      // On Windows, use cross-env for environment variables
+      execSync(`npx cross-env NODE_ENV=production NETLIFY=true NEXT_EXPORT=true NEXT_SKIP_ESLINT_DURING_BUILD=true NEXT_SKIP_TYPE_CHECK=true NEXT_TELEMETRY_DISABLED=1 ${command}`, {
+        stdio: 'inherit',
+      });
+    } else {
+      // On Unix systems, use the standard environment variable syntax
+      const envString = Object.entries(env)
+        .map(([key, value]) => `${key}=${value}`)
+        .join(' ');
+      
+      execSync(`${envString} ${command}`, {
+        stdio: 'inherit',
+        env: { ...process.env, ...env },
+      });
+    }
   } catch (error) {
     console.error('❌ Command failed:', error.message);
     process.exit(1);
