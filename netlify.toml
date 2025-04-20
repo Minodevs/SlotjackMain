@@ -19,6 +19,15 @@ package = "@netlify/plugin-nextjs"
   [plugins.inputs]
   enable = false
 
+# Add dependency cache plugin
+[[plugins]]
+package = "netlify-plugin-cache"
+  [plugins.inputs]
+  paths = [
+    "node_modules/.cache",
+    ".next/cache"
+  ]
+
 # Production context
 [context.production]
   command = "npm run build"
