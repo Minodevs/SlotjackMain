@@ -6,9 +6,6 @@ import Link from 'next/link';
 import { useAuth } from '../../contexts/AuthContext';
 import ClientLayout from '../../components/ClientLayout';
 
-// Tell Next.js not to statically generate this page
-export const dynamic = 'force-dynamic';
-
 // Create a separate client component for the login form that uses useSearchParams
 import LoginForm from './LoginForm';
 

@@ -7,9 +7,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import { UserPlus, AlertTriangle, LogIn } from 'lucide-react';
 import ClientLayout from '../../components/ClientLayout';
 
-// Prevent static generation of this page
-export const dynamic = 'force-dynamic';
-
 export default function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

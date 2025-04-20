@@ -8,7 +8,7 @@ import ClientLayout from '../../../components/ClientLayout';
 import { Lock, ArrowLeft, Loader2, AlertCircle, CheckCircle } from 'lucide-react';
 
 // Prevent static generation of this page
-export const dynamic = 'force-dynamic';
+// export const dynamic = 'force-dynamic';
 
 export default function ResetPasswordPage({ params }: { params: { token: string } }) {
   const router = useRouter();

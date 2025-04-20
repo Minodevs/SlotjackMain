@@ -8,8 +8,8 @@ import ClientLayout from '@/components/ClientLayout';
 import { useAuth } from '@/contexts/AuthContext';
 import { UserRank } from '@/types/user';
 
-// Prevent static generation of this page
-export const dynamic = 'force-dynamic';
+// Remove dynamic directive
+// export const dynamic = 'force-dynamic';
 
 export default function UserProfilePage({ params }: { params: { userId: string } }) {
   const router = useRouter();

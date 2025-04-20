@@ -4,10 +4,9 @@ import path from 'path';
 import { existsSync } from 'fs';
 import fs from 'fs';
 
-// Configure the API route for app router
-export const dynamic = 'force-dynamic';
+// For static export, we'll use edge runtime instead of dynamic
+export const runtime = 'edge';
 export const maxDuration = 60; // 60 seconds timeout
-export const fetchCache = 'force-no-store';
 
 /**
  * Ensure upload directory exists

@@ -7,9 +7,6 @@ import { toast } from 'react-hot-toast';
 import ClientLayout from '../../components/ClientLayout';
 import { Mail, ArrowLeft, Loader2 } from 'lucide-react';
 
-// Prevent static generation of this page
-export const dynamic = 'force-dynamic';
-
 export default function ForgotPasswordPage() {
   const router = useRouter();
   const [email, setEmail] = useState('');

@@ -4,9 +4,6 @@ import { useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'react-hot-toast';
 
-// Tell Next.js not to statically generate this page
-export const dynamic = 'force-dynamic';
-
 // Component that uses searchParams
 function ResetPasswordContent() {
   const router = useRouter();
