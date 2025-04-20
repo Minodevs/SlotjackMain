@@ -8,8 +8,18 @@ import ClientLayout from '@/components/ClientLayout';
 import { useAuth } from '@/contexts/AuthContext';
 import { UserRank } from '@/types/user';
 
-// Remove dynamic directive
-// export const dynamic = 'force-dynamic';
+// Define static parameters for static export
+export function generateStaticParams() {
+  // In a real app, you would fetch this data from your database
+  // For static builds, we include several example userIds for pre-rendering
+  return [
+    { userId: 'example-user-id' },
+    { userId: 'test-user' },
+    { userId: 'admin-user' },
+    { userId: '12345' },
+    { userId: 'johndoe' }
+  ];
+}
 
 export default function UserProfilePage({ params }: { params: { userId: string } }) {
   const router = useRouter();

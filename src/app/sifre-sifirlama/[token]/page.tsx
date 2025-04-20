@@ -10,6 +10,20 @@ import { Lock, ArrowLeft, Loader2, AlertCircle, CheckCircle } from 'lucide-react
 // Prevent static generation of this page
 // export const dynamic = 'force-dynamic';
 
+// Define static parameters for static export
+export function generateStaticParams() {
+  // For password reset tokens, we typically wouldn't pre-render these
+  // since they're dynamically generated and short-lived.
+  // But for static builds, we'll include several examples.
+  return [
+    { token: 'example-reset-token' },
+    { token: 'expired-token' },
+    { token: 'valid-token-example' },
+    { token: '123456789abcdef' },
+    { token: 'test-reset-token' }
+  ];
+}
+
 export default function ResetPasswordPage({ params }: { params: { token: string } }) {
   const router = useRouter();
   const { token } = params;
