@@ -1,39 +1,35 @@
-import fs from 'fs';
-import path from 'path';
 import { NextRequest, NextResponse } from 'next/server';
 
+// For static export, use Edge runtime
 export const runtime = 'edge';
+export const dynamic = 'error';
+
+// Static list of images for the market
+const STATIC_IMAGES = [
+  '/market-img/sterlinbet.png',
+  '/market-img/siribet.png',
+  '/market-img/risebet 20$.png',
+  '/market-img/Risebet 10$.png',
+  '/market-img/zlot 1000t.png',
+  '/market-img/baywin.png'
+];
 
 export async function GET(req: NextRequest) {
   try {
-    // Path to the market images in the public directory
-    const imagesDirectory = path.join(process.cwd(), 'public', 'market-img');
+    console.log('GET /api/list-market-images - Retrieving static image list');
     
-    // Check if directory exists
-    if (!fs.existsSync(imagesDirectory)) {
-      console.error(`Directory not found: ${imagesDirectory}`);
-      return NextResponse.json({ 
-        error: 'Image directory not found', 
-        images: [] 
-      }, { status: 404 });
-    }
-    
-    // Read directory contents
-    const files = fs.readdirSync(imagesDirectory);
-    
-    // Filter for image files and format paths
-    const imageFiles = files
-      .filter(file => {
-        const ext = path.extname(file).toLowerCase();
-        return ['.png', '.jpg', '.jpeg', '.gif', '.webp'].includes(ext);
-      })
-      .map(file => `/market-img/${file}`);
-    
+    // Return the static list - no filesystem operations required
     return NextResponse.json({ 
-      images: imageFiles,
-      count: imageFiles.length
-    }, { status: 200 });
-    
+      images: STATIC_IMAGES,
+      count: STATIC_IMAGES.length
+    }, { 
+      status: 200,
+      headers: {
+        'Cache-Control': 'public, max-age=31536000',
+        'Pragma': 'cache',
+        'Expires': '31536000'
+      }
+    });
   } catch (error) {
     console.error('Error listing market images:', error);
     return NextResponse.json({ 

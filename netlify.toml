@@ -67,6 +67,16 @@ package = "netlify-plugin-cache"
   to = "/mocks/api/market-images.json"
   status = 200
 
+[[redirects]]
+  from = "/api/upload/market-images"
+  to = "/mocks/api/upload-response.json"
+  status = 200
+
+[[redirects]]
+  from = "/api/upload/market-images/*"
+  to = "/mocks/api/upload-response.json"
+  status = 200
+
 # Single page app handling
 [[redirects]]
   from = "/*"
