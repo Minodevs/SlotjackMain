@@ -13,12 +13,6 @@
   NEXT_EXPORT = "true"
   NEXT_PUBLIC_DEPLOY_ENV = "production"
 
-# Disable the Netlify Next.js plugin
-[[plugins]]
-package = "@netlify/plugin-nextjs"
-  [plugins.inputs]
-  enable = false
-
 # Add dependency cache plugin
 [[plugins]]
 package = "netlify-plugin-cache"
