@@ -32,7 +32,7 @@ const nextConfig = {
     return {
       beforeFiles: [
         {
-          source: '/admin/users/[id]/:path*',
+          source: '/admin/users/[userId]/:path*',
           destination: '/admin/users/:userId/:path*',
         },
       ],
