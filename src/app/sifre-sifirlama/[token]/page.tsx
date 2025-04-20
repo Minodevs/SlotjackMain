@@ -1,16 +1,15 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { toast } from 'react-hot-toast';
-import ClientLayout from '../../components/ClientLayout';
+import ClientLayout from '../../../components/ClientLayout';
 import { Lock, ArrowLeft, Loader2, AlertCircle, CheckCircle } from 'lucide-react';
 
-export default function ResetPasswordPage() {
+export default function ResetPasswordPage({ params }: { params: { token: string } }) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const token = searchParams?.get('token') || '';
+  const { token } = params;
   
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -20,20 +19,11 @@ export default function ResetPasswordPage() {
   const [resetSuccess, setResetSuccess] = useState(false);
 
   useEffect(() => {
-    // If no token provided, redirect to forgot password page
-    if (!token) {
-      router.push('/sifremi-unuttum');
-      toast.error('Geçersiz sıfırlama bağlantısı.');
-      return;
-    }
-
     // Validate token when component mounts
     async function validateToken() {
       try {
-        // For static export, simulate token validation
-        // In production with dynamic API routes, you would call an API endpoint
-        
-        // Example simulation logic for demo purposes
+        // In a real application, this would be an API call
+        // For demo purposes, we'll use simulated validation
         const isValid = token.length > 8 && !token.includes('expired');
         setIsTokenValid(isValid);
         
@@ -49,7 +39,7 @@ export default function ResetPasswordPage() {
     }
 
     validateToken();
-  }, [token, router]);
+  }, [token]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,10 +57,8 @@ export default function ResetPasswordPage() {
     setIsSubmitting(true);
 
     try {
-      // For static export, simulate password reset success
-      // In production with dynamic API routes, you would call an API endpoint
-      
-      // Simulate API call with timeout
+      // In a real application, this would be an API call
+      // For demo purposes, we'll simulate success
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       // Success

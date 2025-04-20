@@ -1,0 +1,10 @@
+{
+  "name": "netlify-next-function",
+  "version": "1.0.0",
+  "description": "Netlify serverless function for Next.js",
+  "main": "next.js",
+  "dependencies": {
+    "@netlify/functions": "^1.6.0",
+    "@netlify/next": "^1.2.0"
+  }
+} 

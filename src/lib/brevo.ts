@@ -1,7 +1,7 @@
 // Function to send password reset email
 export async function sendPasswordResetEmail(email: string, token: string) {
   try {
-    const resetLink = `${process.env.NEXT_PUBLIC_SITE_URL}/sifre-sifirlama?token=${token}`;
+    const resetLink = `${process.env.NEXT_PUBLIC_SITE_URL}/sifre-sifirlama/${token}`;
     
     // Use your Brevo template here
     // Example code (replace with your actual implementation):
@@ -14,7 +14,7 @@ export async function sendPasswordResetEmail(email: string, token: string) {
     //   }
     // });
     
-    // For static export demo, log the link
+    // For demo purposes, log the link
     console.log('Password reset link:', resetLink);
     
     return { success: true };

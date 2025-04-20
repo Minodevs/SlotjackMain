@@ -1,18 +1,10 @@
 [build]
-  command = "node build-static.js"
-  publish = "out"
+  command = "next build"
+  publish = ".next"
   
 [build.environment]
   NODE_VERSION = "18.19.1"
   NEXT_TELEMETRY_DISABLED = "1"
-  # Force static export
-  NETLIFY = "true"
-  NEXT_EXPORT = "true"
-  # Disable experimental features
-  NEXT_SKIP_TYPE_CHECK = "true"
-  NEXT_SKIP_ESLINT_DURING_BUILD = "true"
-  # Skip running our custom plugins
-  NETLIFY_NEXT_PLUGIN_SKIP = "true"
   # Environment flags
   NEXT_PUBLIC_DEPLOY_ENV = "production"
 
@@ -27,13 +19,13 @@ package = "netlify-plugin-cache"
 
 # Production context
 [context.production]
-  command = "node build-static.js"
-  publish = "out"
+  command = "next build"
+  publish = ".next"
 
 # Deploy Preview context
 [context.deploy-preview]
-  command = "node build-static.js"
-  publish = "out"
+  command = "next build"
+  publish = ".next"
 
 # Handle Next.js routing - critical for proper path handling
 [[redirects]]
@@ -51,36 +43,21 @@ package = "netlify-plugin-cache"
   to = "/_next/data/:splat"
   status = 200
 
-# API mock redirects
+# Properly handle dynamic routes
 [[redirects]]
-  from = "/api/market/items"
-  to = "/mocks/api/market-items.json"
+  from = "/admin/users/*"
+  to = "/.netlify/functions/next"
   status = 200
 
 [[redirects]]
-  from = "/api/market/items/*"
-  to = "/mocks/api/market-items.json"
-  status = 200
-
-[[redirects]]
-  from = "/api/list-market-images"
-  to = "/mocks/api/market-images.json"
-  status = 200
-
-[[redirects]]
-  from = "/api/upload/market-images"
-  to = "/mocks/api/upload-response.json"
-  status = 200
-
-[[redirects]]
-  from = "/api/upload/market-images/*"
-  to = "/mocks/api/upload-response.json"
+  from = "/sifre-sifirlama/*"
+  to = "/.netlify/functions/next"
   status = 200
 
 # Single page app handling
 [[redirects]]
   from = "/*"
-  to = "/index.html"
+  to = "/.netlify/functions/next"
   status = 200
   force = false
 
@@ -114,9 +91,3 @@ package = "netlify-plugin-cache"
     X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
-
-# Ensure password reset routing works
-[[redirects]]
-  from = "/sifre-sifirlama/*"
-  to = "/index.html"
-  status = 200

@@ -2,17 +2,12 @@
 
 const isProduction = process.env.NODE_ENV === 'production';
 const isNetlify = process.env.NETLIFY === 'true';
-const isStaticExport = isNetlify || process.env.NEXT_EXPORT === 'true';
-const { apiExcludes } = require('./excludes');
 
-console.log(`Building for: ${isProduction ? 'Production' : 'Development'} | Netlify: ${isNetlify} | Export: ${isStaticExport}`);
+// For Netlify, we'll use a server-based deployment rather than static export
+console.log(`Building for: ${isProduction ? 'Production' : 'Development'} | Netlify: ${isNetlify}`);
 
 const nextConfig = {
-  // Set the output based on environment
-  output: isStaticExport ? 'export' : undefined,
-  
-  // Disable automatic static optimization for better control
-  trailingSlash: isStaticExport,
+  // Remove static export output - this enables server-side rendering
   
   // Image configuration
   images: {
@@ -27,18 +22,13 @@ const nextConfig = {
         hostname: 'picsum.photos',
       },
     ],
-    // For static export, unoptimized is required
-    unoptimized: isStaticExport,
   },
   
   // Specify page extensions to exclude unwanted routes
   pageExtensions: ['tsx', 'ts', 'jsx', 'js', 'mdx'],
   
-  // For static export, add custom rewrite handling in redirects rules
+  // Handle rewrites for backward compatibility
   async rewrites() {
-    // Skip for static export as it's not compatible
-    if (isStaticExport) return [];
-    
     return {
       beforeFiles: [
         {
@@ -51,9 +41,6 @@ const nextConfig = {
   
   // Configure headers
   async headers() {
-    // Skip for static export as it's not compatible
-    if (isStaticExport) return [];
-    
     return [
       {
         source: '/(.*)',
@@ -75,61 +62,7 @@ const nextConfig = {
     ];
   },
   
-  // Completely exclude API routes for static export
-  webpack: (config, { dev, isServer }) => {
-    // For static export, exclude all server-only modules and API routes
-    if (isStaticExport) {
-      // Add fallbacks for Node.js modules
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-        path: false,
-        os: false,
-        crypto: false,
-        stream: false,
-        http: false,
-        https: false,
-        zlib: false,
-      };
-      
-      // Skip compiling API routes completely
-      if (isServer) {
-        console.log('⚠️ Excluding API routes from static export build');
-        
-        const originalEntry = config.entry;
-        config.entry = async () => {
-          const entries = await originalEntry();
-          
-          // Filter out API route entries
-          Object.keys(entries).forEach((key) => {
-            if (apiExcludes.some(pattern => {
-              // Convert glob pattern to regex
-              const regexPattern = pattern
-                .replace(/\*\*/g, '.*')
-                .replace(/\*/g, '[^/]*');
-              const regex = new RegExp(regexPattern);
-              return regex.test(key);
-            })) {
-              console.log(`🚫 Excluding API route: ${key}`);
-              delete entries[key];
-            }
-          });
-          
-          return entries;
-        };
-      }
-    }
-    
-    return config;
-  },
-  
-  // Exclude API directories from the build
-  onDemandEntries: {
-    maxInactiveAge: 60 * 60 * 1000, // 1 hour
-    pagesBufferLength: 5,
-  },
-  
-  // Experimental features configuration - removed serverActions as it's built-in to Next.js 14
+  // Experimental features configuration
   experimental: {
     // Empty for now - using defaults
   },
