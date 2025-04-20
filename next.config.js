@@ -41,8 +41,8 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/admin/users/[id]',
-        destination: '/admin/users/:id*',
+        source: '/admin/users/:id*',
+        destination: '/admin/users/[userId]/:id*',
       },
     ];
   },
