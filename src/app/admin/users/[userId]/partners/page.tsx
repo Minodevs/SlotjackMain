@@ -80,4 +80,10 @@ export default function UserPartnersPage({ params }: { params: { userId: string 
       </div>
     </ClientLayout>
   );
+}
+
+export function generateStaticParams() {
+  return [
+    { userId: 'example-user-id' },
+  ];
 } 

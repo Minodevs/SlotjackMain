@@ -2,9 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { MarketItem, MARKET_ITEMS_STORAGE_KEY } from '@/types/market';
 import { cookies } from 'next/headers';
 
-// Configure API route
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+// We'll use runtime edge to handle cookie access without static export issues
+export const runtime = 'edge';
 
 // Default items as fallback
 function getDefaultItems(): MarketItem[] {
