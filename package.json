@@ -11,7 +11,7 @@
     "deploy:fresh": "netlify deploy --prod --force",
     "deploy:dry": "netlify deploy",
     "prebuild": "echo 'Skipping linting for Netlify'",
-    "clean": "if (Test-Path .next) { Remove-Item -Recurse -Force .next } && if (Test-Path node_modules\\.cache) { Remove-Item -Recurse -Force node_modules\\.cache }",
+    "clean": "node -e \"const fs=require('fs');if(fs.existsSync('.next')){fs.rmSync('.next',{recursive:true,force:true})};if(fs.existsSync('node_modules/.cache')){fs.rmSync('node_modules/.cache',{recursive:true,force:true})}\"",
     "build:clean": "npm run clean && npm run build",
     "deploy:clean": "npm run build:clean && npm run deploy:fresh",
     "netlify:dev": "netlify dev",
@@ -65,15 +65,15 @@
   "main": "next.config.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Minodevs/slotjack.git"
+    "url": "git+https://github.com/Minodevs/SlotjackMain.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Minodevs/slotjack/issues"
+    "url": "https://github.com/Minodevs/SlotjackMain/issues"
   },
-  "homepage": "https://github.com/Minodevs/slotjack#readme",
+  "homepage": "https://github.com/Minodevs/SlotjackMain#readme",
   "engines": {
     "node": ">=18.0.0"
   }
