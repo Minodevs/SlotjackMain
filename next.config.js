@@ -37,6 +37,16 @@ const nextConfig = {
   // Enable compression for better performance
   compress: true,
   
+  // Fix route conflicts with rewrites
+  async rewrites() {
+    return [
+      {
+        source: '/admin/users/[id]',
+        destination: '/admin/users/:id*',
+      },
+    ];
+  },
+  
   // Set security headers
   async headers() {
     return [
