@@ -3,7 +3,23 @@ const { builder } = require('@netlify/functions');
 // This file sets up the Next.js server-side rendering function
 const nextFunction = async (req, context) => {
   // Get the path from the request
-  const url = new URL(req.url);
+  let url;
+  try {
+    // Make sure req.url is well-formed before creating a URL object
+    let urlString = req.url;
+    if (!urlString.startsWith('http://') && !urlString.startsWith('https://')) {
+      // Add a base URL if one is not present
+      urlString = `https://${context.site.name || 'example.com'}${urlString.startsWith('/') ? urlString : `/${urlString}`}`;
+    }
+    url = new URL(urlString);
+    console.log(`Processing request for path: ${url.pathname}`);
+  } catch (error) {
+    console.error('Error parsing URL:', error, 'Request URL was:', req.url);
+    return {
+      statusCode: 400,
+      body: 'Invalid URL format'
+    };
+  }
   
   // If we're handling a static asset, skip this function (handled by Netlify CDN)
   if (url.pathname.startsWith('/_next/static/') ||
@@ -20,8 +36,6 @@ const nextFunction = async (req, context) => {
       body: 'Not found'
     };
   }
-  
-  console.log(`Server-side rendering requested for: ${url.pathname}`);
   
   try {
     const { default: handler } = await import('@netlify/next');

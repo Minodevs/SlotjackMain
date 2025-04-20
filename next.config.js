@@ -29,14 +29,7 @@ const nextConfig = {
   
   // Handle rewrites for backward compatibility
   async rewrites() {
-    return {
-      beforeFiles: [
-        {
-          source: '/admin/users/:userId/:path*',
-          destination: '/admin/users/:userId/:path*',
-        },
-      ],
-    };
+    return [];
   },
   
   // Configure headers
