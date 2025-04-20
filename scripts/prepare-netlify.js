@@ -135,6 +135,9 @@ function createRedirects() {
     '/api/upload/market-images /mocks/api/upload-response.json 200',
     '/api/upload/market-images/* /mocks/api/upload-response.json 200',
     
+    '# Ensure password reset with token parameter works (SPA routing)',
+    '/sifre-sifirlama/* /index.html 200',
+    
     '# Handle client-side routing',
     '/*    /index.html   200',
   ].join('\n');
