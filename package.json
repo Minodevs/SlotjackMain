@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "npm run clean && cross-env NEXT_SKIP_ESLINT_DURING_BUILD=true NEXT_SKIP_TYPE_CHECK=true NETLIFY=true NEXT_EXPORT=true NODE_ENV=production next build && node scripts/prepare-netlify.js",
+    "build:static": "node build-static.js",
     "start": "next start",
     "lint": "next lint",
     "deploy": "netlify deploy --prod",
@@ -18,7 +19,7 @@
     "postbuild": "next-sitemap",
     "netlify-build": "node netlify-build.js",
     "netlify-build-skip-lint": "node build-for-netlify.js",
-    "build:netlify": "cross-env NEXT_SKIP_ESLINT_DURING_BUILD=true NEXT_SKIP_TYPE_CHECK=true NETLIFY=true NEXT_EXPORT=true NODE_ENV=production next build && node scripts/prepare-netlify.js",
+    "build:netlify": "node build-static.js",
     "debug:build": "cross-env DEBUG_BUILD=true npm run build:netlify",
     "postinstall": "npm ls react || npm install react@^18",
     "prepare-netlify": "node scripts/prepare-netlify.js"

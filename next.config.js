@@ -3,6 +3,7 @@
 const isProduction = process.env.NODE_ENV === 'production';
 const isNetlify = process.env.NETLIFY === 'true';
 const isStaticExport = isNetlify || process.env.NEXT_EXPORT === 'true';
+const { apiExcludes } = require('./excludes');
 
 console.log(`Building for: ${isProduction ? 'Production' : 'Development'} | Netlify: ${isNetlify} | Export: ${isStaticExport}`);
 
@@ -71,10 +72,11 @@ const nextConfig = {
     ];
   },
   
-  // For static export, simplify webpack config
-  webpack: (config, { isServer }) => {
-    // For static export, exclude all server-only modules
+  // Completely exclude API routes for static export
+  webpack: (config, { dev, isServer }) => {
+    // For static export, exclude all server-only modules and API routes
     if (isStaticExport) {
+      // Add fallbacks for Node.js modules
       config.resolve.fallback = {
         ...config.resolve.fallback,
         fs: false,
@@ -86,9 +88,42 @@ const nextConfig = {
         https: false,
         zlib: false,
       };
+      
+      // Skip compiling API routes completely
+      if (isServer) {
+        console.log('⚠️ Excluding API routes from static export build');
+        
+        const originalEntry = config.entry;
+        config.entry = async () => {
+          const entries = await originalEntry();
+          
+          // Filter out API route entries
+          Object.keys(entries).forEach((key) => {
+            if (apiExcludes.some(pattern => {
+              // Convert glob pattern to regex
+              const regexPattern = pattern
+                .replace(/\*\*/g, '.*')
+                .replace(/\*/g, '[^/]*');
+              const regex = new RegExp(regexPattern);
+              return regex.test(key);
+            })) {
+              console.log(`🚫 Excluding API route: ${key}`);
+              delete entries[key];
+            }
+          });
+          
+          return entries;
+        };
+      }
     }
     
     return config;
+  },
+  
+  // Exclude API directories from the build
+  onDemandEntries: {
+    maxInactiveAge: 60 * 60 * 1000, // 1 hour
+    pagesBufferLength: 5,
   },
   
   // Disable experimental features that might cause issues
