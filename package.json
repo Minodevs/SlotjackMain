@@ -1,0 +1,80 @@
+{
+  "name": "slotjack",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "deploy": "netlify deploy --prod",
+    "deploy:fresh": "netlify deploy --prod --force",
+    "deploy:dry": "netlify deploy",
+    "prebuild": "echo 'Skipping linting for Netlify'",
+    "clean": "if (Test-Path .next) { Remove-Item -Recurse -Force .next } && if (Test-Path node_modules\\.cache) { Remove-Item -Recurse -Force node_modules\\.cache }",
+    "build:clean": "npm run clean && npm run build",
+    "deploy:clean": "npm run build:clean && npm run deploy:fresh",
+    "netlify:dev": "netlify dev",
+    "postbuild": "next-sitemap",
+    "netlify-build": "node netlify-build.js",
+    "netlify-build-skip-lint": "node build-for-netlify.js",
+    "build:netlify": "cross-env NEXT_SKIP_ESLINT_DURING_BUILD=true NEXT_SKIP_TYPE_CHECK=true NEXT_EXPORT=true NODE_ENV=production next build",
+    "debug:build": "cross-env DEBUG_BUILD=true NEXT_EXPORT=true npm run build:netlify"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.1.0",
+    "@supabase/supabase-js": "^2.49.4",
+    "@types/crypto-js": "^4.2.2",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/nodemailer": "^6.4.17",
+    "@types/uuid": "^10.0.0",
+    "axios": "^1.8.4",
+    "clsx": "^2.1.1",
+    "crypto-js": "^4.2.0",
+    "date-fns": "^4.1.0",
+    "framer-motion": "^12.6.5",
+    "jsonwebtoken": "^9.0.2",
+    "lucide-react": "^0.344.0",
+    "next": "14.1.0",
+    "nodemailer": "^6.10.1",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-hot-toast": "^2.5.2",
+    "tailwind-merge": "^3.2.0",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.3",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.4.17",
+    "critters": "^0.0.23",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.5.0",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "14.1.0",
+    "netlify-cli": "^17.19.0",
+    "next-sitemap": "^4.2.3",
+    "postcss": "^8.4.35",
+    "postcss-import": "^16.1.0",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  },
+  "description": "This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).",
+  "main": "next.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Minodevs/slotjack.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Minodevs/slotjack/issues"
+  },
+  "homepage": "https://github.com/Minodevs/slotjack#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

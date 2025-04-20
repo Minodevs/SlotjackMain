@@ -1,0 +1,10 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://dulcet-tanuki-9e2ad9.netlify.app
+
+# Sitemaps
+Sitemap: https://dulcet-tanuki-9e2ad9.netlify.app/sitemap.xml
+Sitemap: https://dulcet-tanuki-9e2ad9.netlify.app/server-sitemap.xml

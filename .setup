@@ -1,0 +1,61 @@
+Initialize Next.js in current directory:
+```bash
+mkdir temp; cd temp; npx create-next-app@latest . -y --typescript --tailwind --eslint --app --use-npm --src-dir --import-alias "@/*" -no --turbo
+```
+
+Now let's move back to the parent directory and move all files except prompt.md.
+
+For Windows (PowerShell):
+```powershell
+cd ..; Move-Item -Path "temp*" -Destination . -Force; Remove-Item -Path "temp" -Recurse -Force
+```
+
+For Mac/Linux (bash):
+```bash
+cd .. && mv temp/* temp/.* . 2>/dev/null || true && rm -rf temp
+```
+
+# Project Files Setup
+Generated on: 2025-04-13T00:58:09.574Z
+Project ID: a1c27302-4961-4c54-ab64-c79dc905e11b
+
+You are responsible for ensuring consistency and proper structure across the established markdown files when generating code based on the following markdown files:
+- main-page.md
+- haberler.md
+- etkinlikler.md
+- sponsorlar.md
+- market.md
+- turnuvalar.md
+- liderlik-tablosu.md
+- biletler.md
+- sizden-gelenler.md
+- cevrim-etkinlikleri.md
+
+Critical Processing Rules:
+- NO parallel implementation
+- NO partial completion
+- NO skipping between files
+- COMPLETE verification at each stage
+- MAINTAIN structural integrity
+- ENHANCE without breaking
+
+Completion Requirements:
+- Each markdown file MUST be fully executed
+- ALL code MUST be generated
+- VERIFY against file requirements
+- LOG completion status
+- STRICT sequential processing
+- NO mixing implementation steps
+
+The agent MUST:
+- Process ONE markdown file at a time
+- Complete CURRENT file before advancing
+- Generate ALL required code
+- Verify FULL implementation
+- Track completion status
+- Follow markdown specifications exactly
+
+UI best practices:
+- The main-page.md file is the parent when it comes to color code, fonting and overall styling. Each page should follow the style from main-page.md
+- Ensure layout components (sidebar/nav) extend full viewport height and width using min-h-screen and w-full
+- MUST maintain readable contrast by avoiding light gray text (#808080 or lighter) on white backgrounds. Default using black text on white background unless dictated otherwise

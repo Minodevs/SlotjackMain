@@ -1,0 +1,88 @@
+# Authentication Implementation Guide
+
+1. Install Supabase packages (IMPORTANT - use these specific packages only):
+```bash
+npm install @supabase/supabase-js @supabase/ssr
+```
+
+⚠️ IMPORTANT: DO NOT use @supabase/auth-helpers-nextjs or other older Supabase auth packages.
+Always use @supabase/ssr for Next.js 14+ projects.
+
+2. Create a .env.local file in your project root with these variables:
+- NEXT_PUBLIC_SUPABASE_URL=your-project-url
+- NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+
+3. Follow this supabase doc to set up server-side auth:
+@https://supabase.com/docs/guides/auth/server-side/nextjs?queryGroups=router&router=app
+
+4. Create middleware.ts in src/middleware.ts (NOT in project root) to protect these routes:
+
+The following routes require authentication:
+- /
+- /etkinlikler
+- /turnuvalar
+- /liderlik-tablosu
+- /biletler
+- /sizden-gelenler
+- /cevrim-etkinlikleri
+- /dashboard
+- /profile
+- /settings
+
+5. ⚠️ CRITICAL: Set up authentication pages OUTSIDE the app directory to prevent layout inheritance:
+a) Create auth pages in src/pages/auth/:
+- Place auth pages in pages directory to ensure they're completely separate from the main app
+- This prevents inheritance from the root layout
+- Keeps auth flow as a standalone portal to the main app
+
+b) Create src/pages/_app.tsx for auth page layout:
+```typescript
+// src/pages/_app.tsx
+import React from 'react'
+import type { AppProps } from 'next/app'
+import '../app/globals.css'
+
+function MyApp({ Component, pageProps }: AppProps): React.ReactElement {
+  return <Component {...pageProps} />
+}
+
+export default MyApp
+```
+
+This setup is required to:
+- Handle auth pages separately from main app layout
+- Apply global styles to auth pages
+- Provide a base for auth-specific providers if needed
+
+c) Main app integration:
+- Add auth state management to your app
+- Add sign in/out functionality to the main app header while preserving the existing layout structure
+  * Adding a visible "Sign In" button when user is not authenticated
+  * Adding a user menu dropdown in header with email and sign out option when authenticated
+  * Ensuring the header auth state updates immediately after sign in/out actions
+  * Making auth actions prominent and easily accessible in the header, not just in profile menu
+  * Add ellipses if the email is too long to fit in the header
+- Implement profile menu with auth actions
+
+6. Create these authentication pages in src/pages/auth/:
+- signin.tsx for login page
+- signup.tsx for registration page 
+- reset-password.tsx for password reset
+
+7. Verify implementation:
+- Confirm middleware.ts is in src/middleware.ts
+- Confirm auth pages are in pages directory and NOT in app directory
+- Test protected routes
+- Test signup and password reset flows
+- Verify header sign in/out functionality works
+
+8. Do a codebase check to ensure all auth routes are properly protected and to fix any issues.
+
+Important Notes:
+- Auth pages MUST be in pages directory, not in app directory
+- This ensures they're completely standalone without inheriting main app layout
+- Main app header should still have sign in/out functionality
+- Preserve existing layout structure
+- Maintain current styling and UI consistency
+- Keep all existing navigation and layout intact
+- Do not change styles of existing components

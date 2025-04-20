@@ -1,0 +1,83 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+  
+[build.environment]
+  NODE_VERSION = "18"
+  NEXT_TELEMETRY_DISABLED = "1"
+  # Force cache invalidation
+  NETLIFY_NEXT_PLUGIN_SKIP = "true"
+  # Add build timestamp to force fresh builds
+  BUILD_TIMESTAMP = "${COMMIT_REF}"
+  # Ensure all pages are generated
+  NEXT_EXPORT = "true"
+  NEXT_PUBLIC_DEPLOY_ENV = "production"
+
+# Disable the Netlify Next.js plugin
+[[plugins]]
+package = "@netlify/plugin-nextjs"
+  [plugins.inputs]
+  enable = false
+
+# Production context
+[context.production]
+  command = "npm run build"
+  publish = ".next"
+
+# Deploy Preview context
+[context.deploy-preview]
+  command = "npm run build"
+  publish = ".next"
+
+# Handle Next.js routing - critical for proper path handling
+[[redirects]]
+  from = "/_next/static/*"
+  to = "/_next/static/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/_next/image*"
+  to = "/_next/image:splat"
+  status = 200
+
+[[redirects]]
+  from = "/_next/data/*"
+  to = "/_next/data/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = true
+
+# Cache optimization
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Disable caching for HTML and data
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/_next/data/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Content-Security-Policy = "default-src 'self'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; connect-src 'self' https:"

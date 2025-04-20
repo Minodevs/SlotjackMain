@@ -1,0 +1,21 @@
+# Filter sensitive information from files
+*.env filter=clean-env
+*.env.* filter=clean-env
+*.local filter=clean-env
+
+# Set default behavior for text files
+* text=auto
+
+# Ensure line endings are normalized
+*.js text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.jsx text eol=lf
+*.json text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.md text eol=lf
+
+# Ignore these files in Github language statistics
+*.html linguist-vendored
+*.css linguist-vendored 
